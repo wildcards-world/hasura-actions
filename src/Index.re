@@ -9,9 +9,34 @@ module HomeAnimals = {
   [@decco.decode]
   type body_in = unit;
   [@decco.encode]
-  type homeAnimals = {id: string};
+  type homeAnimals = {
+    id: string,
+    prev: string,
+    next: string,
+  };
   [@decco.encode]
   type body_out = array(homeAnimals);
+  let convertIdArrayIntoHomepageDetails: array(string) => body_out =
+    animalArray => {
+      let length = animalArray->Array.length;
+
+      Array.mapWithIndex(
+        animalArray,
+        (index, item) => {
+          Js.log3(
+            (length + index - 1) mod length,
+            " - ",
+            (index + 1) mod length,
+          );
+          {
+            id: item,
+            prev:
+              animalArray->Array.getUnsafe((length + index - 1) mod length),
+            next: animalArray->Array.getUnsafe((index + 1) mod length),
+          };
+        },
+      );
+    };
   let endpoint =
     Serbet.jsonEndpoint({
       verb: POST,
@@ -20,14 +45,8 @@ module HomeAnimals = {
       body_out_encode,
       handler: (_body, _req) => {
         // TODO: add logic that chooses which animals to display on the home page.
-        [|
-          {id: "1"},
-          {id: "2"},
-          {id: "6"},
-          {id: "8"},
-          {id: "11"},
-          {id: "42"},
-        |]
+        [|"1", "2", "6", "8", "11", "42"|]
+        ->convertIdArrayIntoHomepageDetails
         ->async;
       },
     });
