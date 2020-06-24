@@ -1,5 +1,4 @@
 open Serbet.Endpoint;
-open Async;
 open Globals;
 
 Dotenv.config();
