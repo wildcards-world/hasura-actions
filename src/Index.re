@@ -44,7 +44,7 @@ module HomeAnimals = {
       body_out_encode,
       handler: (_body, _req) => {
         // TODO: add logic that chooses which animals to display on the home page.
-        [|"1", "6", "22", "2", "11", "18", "21", "42"|]
+        [|"1", "42", "2", "23", "11", "18", "21", "6"|]
         ->convertIdArrayIntoHomepageDetails
         ->async;
       },
